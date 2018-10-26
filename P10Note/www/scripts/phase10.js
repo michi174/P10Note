@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     var root = null;
     var useHash = true; // Defaults to: false
-    var hash = '#!'; // Defaults to: '#'
+    var hash = '#'; // Defaults to: '#'
     var router = new Navigo(root, useHash, hash);
 
     var players = new Array();
@@ -19,18 +19,37 @@ $(document).ready(function () {
     initGame();
 
 
-    function initGame() {
+    function initGame()
+    {
         savegame = checkLocalStorage();
         hasSavegame = checkSaveGame();
         generatePhaseCards();
-
-        $('#game-welcome-wrapper').show();
-
 
         if (!hasSavegame) {
             $('#game-continue-button').hide();
         }
     }
+
+    router.on(function () {
+        $('#game-welcome-wrapper').show();
+        $('#welcome-card').show();
+        if (!devMode)
+        {
+            $('#game-settings-wrapper').hide();
+            $('#player-settings-wrapper').hide();
+            $('#dealer-settings-wrapper').hide();
+            $('#game-card-setting-wrapper').hide();
+            $('#edit-round-wrapper').hide();
+            $('#finish-form').hide();
+            $('#game-field-wrapper').hide();
+            $('#user-rounds-wrapper').hide();
+        }
+    }).resolve();
+
+    /*router.notFound(function () {
+        console.log("Routed from notFound to Homepage");
+        router.navigate('');
+    });*/
 
     if (devMode === true) {
         $('#game-settings-wrapper').show(500);
@@ -62,12 +81,14 @@ $(document).ready(function () {
 
     function checkBackBtn() {
         if (!devMode) {
-            if ($("#game-field-wrapper").is(":visible") === false) {
+            if ($("#game-field-wrapper").is(":visible") === false)
+            {
                 $("#global-back-btn").show();
                 $("#finish-round").hide();
                 $("#edit-last").hide();
             }
-            else {
+            else
+            {
                 $("#global-back-btn").hide();
                 $("#finish-round").show();
                 $("#edit-last").show();
@@ -88,131 +109,224 @@ $(document).ready(function () {
 
 
     $('#new-game-button').click(function () {
+        router.navigate('gamesettings');
+    });
+
+    router.on('gamesettings', function () {
         if (savegame === true) {
             localStorage.clear();
         }
-
         if (devMode === false) {
-            $('#game-welcome-wrapper').hide(500);
+            $('.game-wrapper').hide(500);
             $('#game-settings-wrapper').show(500);
         }
-    });
+    }).resolve();
 
     $('#game-continue-button').click(function () {
-        players = JSON.parse(localStorage.getItem('savegame'));
-        gameInfo = JSON.parse(localStorage.getItem('gameInfo'));
-
-        createGameTable();
-
-        $('#round-counter').html(players[0]["rounds"].length + 1);
-        $('#game-control-wrapper').css('visibility', 'visible');
-
-        if (devMode === false) {
-            $('#game-welcome-wrapper').hide(500);
-            $('#game-field-wrapper').show(500);
-
-        }
-        gameStarted = true;
+        router.navigate('gamefield');
     });
 
+    function loadGame()
+    {
+        if (hasSavegame)
+        {
+            players = JSON.parse(localStorage.getItem('savegame'));
+            gameInfo = JSON.parse(localStorage.getItem('gameInfo'));
+
+            createGameTable();
+
+            $('#round-counter').html(players[0]["rounds"].length + 1);
+            $('#game-control-wrapper').css('visibility', 'visible');
+
+            gameStarted = true;
+        }
+        else
+        {
+            console.log("Routed from loadGame() to Homepage");
+            router.navigate('');
+            
+        }
+    }
+
+
+    //Anzahl der Spieler festlegen
+    $('#set-num-players-button').click(function () {
+        router.navigate('playersettings');
+    });
+
+    router.on('playersettings', function () {
+
+        if ($('#num-players').val() === "")
+        {
+            console.log("Routed from playersettings to Homepage");
+            router.navigate('');
+        }
+        else
+        {
+            setNumOfPlayers(getNumberOfPlayers());
+        }
+        
+    }).resolve();
+
+    //Legt die Anzahl der Spieler fest und erstellt das UI zur Namenseingabe
     function setNumOfPlayers($num) {
-        num_players = $num;
+        var num_players = $num;
+        var playersettings = "";
 
-        if (num_players > 1) {
-            var i;
-
-            for (i = num_players - 1; i >= 0; i--) {
-                $('#player-name-input-wrapper').prepend("<div><div class='player-name-input-text'><input type='text' class='player-name-input' id='player-name-" + i + "' placeholder='Spieler " + (i + 1) + "'></div></div>");
+        if (num_players > 1)
+        {
+            for (var i = 0; i < num_players; i++)
+            {
+                playersettings += `
+                    <div>
+                        <div class='player-name-input-text'>
+                            <input type='text' class='player-name-input' id='player-name-` + i + `' placeholder='Spieler ` + (i + 1) + `'>
+                        </div>
+                    </div>`;
             }
 
-            if (devMode === false) {
-                $('#game-settings-wrapper').hide(500);
+            $('#player-name-input-wrapper').html(playersettings);
+
+            if (devMode === false)
+            {
+                $('.game-wrapper').hide(500);
                 $('#player-settings-wrapper').show(500);
             }
         }
-        else {
+        else
+        {
             showMessage("Es müssen mindestens 2 Spieler am Spiel teilnehmen.");
         }
     }
 
-    //Anzahl der Spieler festlegen
-    $('#set-num-players-button').click(function () {
-        setNumOfPlayers($('#num-players').val());
+
+    //Spiel (Phasenkarte) auswählen
+    $('#choose-card-next-btn').click(function ()
+    {
+        router.navigate('gamecardselection');
     });
 
+    router.on('gamecardselection', function ()
+    {
+        if (getNumberOfPlayers() > 1)
+        {
+            if (devMode === false) {
+                $('.game-wrapper').hide(500);
+                $('#game-card-setting-wrapper').show(500);
+            }
+        }
+        else
+        {
+            router.navigate('');
+        }
+
+    }).resolve();
 
     //Dealer auswählen
-    $('#choose-card-next-btn').click(function () {
+    $('#dealer-next-btn').click(function ()
+    {
+        router.navigate('dealerselection');
+    });
 
-        if (devMode === false) {
-            $('#player-settings-wrapper').hide(500);
-            $('#game-card-setting-wrapper').show(500);
-
+    router.on('dealerselection', function ()
+    {
+        if ((getNumberOfPlayers() > 1) && typeof ($('#player-name-0').val()) !== "undefined")
+        {
+            generateDealerInput();
+            if (devMode === false) {
+                $('.game-wrapper').hide(500);
+                $('#dealer-settings-wrapper').show(500);
+            }
+        }
+        else
+        {
+            console.log("Routed from dealerselection to Homepage");
+            router.navigate('');
         }
 
     });
 
-    $('#dealer-next-btn').click(function () {
-        generateDealerInput();
-        if (devMode === false) {
-
-            $('#game-card-setting-wrapper').hide(500);
-            $('#dealer-settings-wrapper').show(500);
-        }
-    });
-
+    //Erzeugt das UI zum Auswählen des Dealers
     function generateDealerInput() {
         var numPlayers = 0;
 
-        numPlayers = $('#num-players').val();
+        numPlayers = getNumberOfPlayers();
+        var dealerdata = "";
 
-        for (i = numPlayers - 1; i >= 0; i--) {
+        for (var i = 0; i < numPlayers; i++) {
             player_name = $('#player-name-' + i).val();
+
+                
 
             if (player_name === "") {
                 player_name = $('#player-name-' + i).attr("placeholder");
             }
 
-            $('#dealer-name-wrapper').prepend("<div class=\"dealer-choose\" data-dealer-id=\"" + i + "\"><div class=\"dealer-name\">" + player_name + "</div></div>");
-
-            $('.dealer-choose').click(function () {
-                dealerId = $(this).attr('data-dealer-id');
-                $('#dealer-id').val(dealerId);
-                checkDealerSelection();
-                $(this).addClass('phase-selected');
-            });
+            dealerdata += `
+                <div class="dealer-choose" data-dealer-id=` + i + `>
+                    <div class="dealer-name">` + player_name + `</div>
+                </div>`;
         }
 
+        $('#dealer-name-wrapper').html(dealerdata);
         $('#dealer-name-wrapper').append("<div class=\"clearfix\"></div>");
+
+        $('.dealer-choose').click(function () {
+            dealerId = $(this).attr('data-dealer-id');
+            $('#dealer-id').val(dealerId);
+            checkDealerSelection();
+            $(this).addClass('phase-selected');
+        });
     }
 
 
 
-    //Spielerinformationen erzeugen (Neues Spiel starten)
+    //Spiel starten
+    //Erzeugt das Spielfeld
     $('#start-game-btn').click(function () {
-        if ($.isNumeric($('#dealer-id').val())) {
-            setPlayerNames();
-            createGameTable();
-            gameInfo["phaseCardId"] = $('#phase-card-id').val();
-            $('#game-control-wrapper').css('visibility', 'visible');
-
-            if (devMode === false) {
-                $('#dealer-settings-wrapper').hide(500);
-                $('#game-field-wrapper').show(500);
-
-            }
-            gameStarted = true;
+        router.navigate('gamefield');
+        /*if ($.isNumeric($('#dealer-id').val()))
+        {
+  
         }
-        else {
+        else
+        {
             showMessage("Es wurde kein Dealer ausgewählt");
-        }
+        }*/
 
     });
+
+    router.on('gamefield', function () {
+        if (!gameStarted)
+        {
+            if (!hasSavegame)
+            {
+                generatePlayerStats();
+                gameInfo["phaseCardId"] = $('#phase-card-id').val();
+            }
+            else
+            {
+                loadGame();
+            }
+        }
+
+        createGameTable();
+        gameStarted = true;
+        save();
+        
+        if (devMode === false) {
+            $('.game-wrapper').hide(500);
+            $('#game-field-wrapper').show(500);
+        }
+
+        $('#game-control-wrapper').css('visibility', 'visible');
+    }).resolve();
 
     $('#close-card').click(function () {
         $('#phase-card-wrapper').hide(500);
     });
 
+    //Todo: Outsource it to a fking JSON!!!
     function generatePhaseCards() {
         phases[0] = new Array();
         phases[0]["name"] = "Classic";
@@ -334,6 +448,8 @@ $(document).ready(function () {
         }
     }
 
+
+    //Erzeugt eine Phasekarte und zeigt sie auf dem Bildschirm an. Es kann eine Phase farblich markiert werden.
     function createPhaseCard(cardId, phaseId = -1) {
         num_phases = phases[cardId]["phase"].length;
 
@@ -362,8 +478,6 @@ $(document).ready(function () {
         gameInfo['phaseCardId'] = cardId;
     });
 
-
-
     $('#phase-card-viewer').click(function () {
         cardId = gameInfo["phaseCardId"];
         createPhaseCard(cardId);
@@ -391,7 +505,8 @@ $(document).ready(function () {
         });
     }
 
-    function setPlayerNames(savegame = null) {
+    //Erzeugt ein neues Objekt für alle Spieler und füllt die Spielerinformationen aus
+    function generatePlayerStats(savegame = null) {
         var num_players = $('#num-players').val();
         var i = 0;
 
@@ -421,10 +536,25 @@ $(document).ready(function () {
         }
     }
 
+    //Erezugt das Spielfeld
     function createGameTable() {
-        for (var i = 0; i < players.length; i++) {
-            $('#player-info-wrapper').append("<tr class=\"table-row\" data-player-id=\"" + i + "\" id=\"playerinfo_header_" + i + "\"><td class=\"table-cell\" id=\"player-name-" + i + "\">" + players[i]["name"] + "</td><td class=\"table-cell player-phase center-align\" id=\"player-phase-" + i + "\">" + players[i]["phase"] + "</td><td class=\"table-cell center-align player-trys\" id=\"player-last-points-" + i + "\">" + players[i]["last_points"] + "</td><td class=\"table-cell center-align\" id=\"player-points-" + i + "\">" + players[i]["points"] + "</td></tr>");
+        var playerinfodata = "";
+        var dealerString = "";
+        for (var i = 0; i < players.length; i++)
+        {
+            playerinfodata += `
+                <tr class="table-row" data-player-id="`+ i +`" id="playerinfo_header_`+ i +`">
+                    <td class="table-cell" id="player-name-` + i + `">` + players[i]["name"] + `</td>
+                    <td class="table-cell player-phase center-align" id="player-phase-` + i + `">` + players[i]["phase"] + `</td>
+                    <td class="table-cell center-align player-trys" id="player-last-points-` + i + `">` + players[i]["last_points"] + `</td>
+                    <td class="table-cell center-align" id="player-points-` + i + `">` + players[i]["points"] + `</td>
+                </tr>"`;
+        }
 
+        $('#player-info-data').html(playerinfodata);
+
+        for (i = 0; i < players.length; i++)
+        {
             if (players[i]["dealer"] === true) {
                 $('#playerinfo_header_' + i).addClass('dealer-highlight');
             }
@@ -432,6 +562,7 @@ $(document).ready(function () {
                 $('#playerinfo_header_' + i).removeClass('dealer-highlight');
             }
         }
+
 
 
 
@@ -502,6 +633,7 @@ $(document).ready(function () {
         }
     }
 
+    //Erzeugt den Header der Userrounds für jede Phase
     function createUrHeader(phase) {
         $("#ur-round-wrapper").append(`
         <tr class="table-row border-bottom ur-tbl-header" id="ur-table-header-`+ phase + `">
@@ -525,6 +657,7 @@ $(document).ready(function () {
 
     }
 
+    //Erzeugt eine neue Zeile für die Userrounds pro gespieltem Spiel
     function createUrRow(points, done, trys) {
         var image = (done) ? "gfx/right.png" : "gfx/cross.png";
 
@@ -867,6 +1000,18 @@ $(document).ready(function () {
         else
         {
             return false;
+        }
+    }
+
+    function getNumberOfPlayers()
+    {
+        if ($('#num-players').val() === "")
+        {
+            return 0;
+        }
+        else
+        {
+            return parseInt($('#num-players').val());
         }
     }
 });

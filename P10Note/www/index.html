@@ -81,13 +81,17 @@
             <div id="game-field-wrapper" class="table game-wrapper">
                 <div class="headline">Spielinformationen</div>
                 <table cellspacing="0" align="center" id="player-info-wrapper">
-                    <tr class="table-row">
-                        <td width="40%"><i class="material-icons main-color-light">portrait</i></td>
-                        <td width="20%" class="center-align"><i class="material-icons main-color-light">check</i></td>
-                        <td width="20%" class="center-align"><i class="material-icons main-color-light">gamepad</i></td>
-                        <td width="20%" class="center-align"><i class="material-icons main-color-light">functions</i></td>
-                    </tr>
-                    <!-- Hier werden die Spieler durch Javascript dynamisch erstellt -->
+                    <thead>
+                        <tr class="table-row">
+                            <td width="40%"><i class="material-icons main-color-light">portrait</i></td>
+                            <td width="20%" class="center-align"><i class="material-icons main-color-light">check</i></td>
+                            <td width="20%" class="center-align"><i class="material-icons main-color-light">gamepad</i></td>
+                            <td width="20%" class="center-align"><i class="material-icons main-color-light">functions</i></td>
+                        </tr>
+                    </thead>
+                    <tbody id="player-info-data">
+                        <!-- Hier werden die Spieler durch Javascript dynamisch erstellt -->
+                    </tbody>
                 </table>
             </div>
             <div id="user-rounds-wrapper" class="table game-wrapper">
