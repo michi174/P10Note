@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Passen Sie die Inhaltssicherheitsrichtlinie im META-Tag unten nach Bedarf an. Fügen Sie "default-src" die Option "unsafe-inline" hinzu, um Inline-JavaScript zu aktivieren.
+        Details finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=617521".
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="scripts/navigo.min.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="scripts/jquery-3.3.1.min.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="scripts/jquery-ui-1.12.1.min.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="scripts/phase10.js" type="text/javascript" charset="UTF-8"></script>
+
+    <title>Phase10Note</title>
+</head>
+<body class="noselect">
+    <div id="content-wrapper">
+        <div id="game-info-wrapper">
+            <div id="app-title">
+                <div id="hamburger-button" class="left"><i class="material-icons md24">menu</i></div>
+                <div class="left">Phase 10 Notes</div>
+                <div class="clearfix"></div>
+            </div>
+            <div id="game-control-wrapper">
+                <div id="global-back-btn" class="left gameinfo-button"><img class="center" src="gfx/back-white.png"></div>
+                <div id="finish-round" class="left gameinfo-button"><img class="center" src="gfx/flag-white.png"></div>
+                <div id="edit-last" class="left gameinfo-button"><img class="center" src="gfx/edit-white.png"></div>
+                <div id="phase-card-viewer" class="right gameinfo-button"><img class="center" src="gfx/phase-card-white.png"></div>
+                <div id="round-counter" class="right gameinfo-button">1</div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div id="game-content-wrapper">
+            <div id="game-welcome-wrapper" class="game-wrapper">
+                <div id="welcome-card" class="game-wrapper"><img src="gfx/p10-logo.png" /></div>
+                <div id="game-continue-button" class="game-button">Fortsetzen</div>
+                <div id="new-game-button" class="game-button">Neues Spiel</div>
+                <div id="game-options-button" class="game-button">Optionen</div>
+            </div>
+            <div id="game-settings-wrapper" class="game-wrapper">
+                <div class="headline">Anzahl der Spieler</div>
+                <div><input id="num-players" type="number" maxlength="3"></div>
+                <div id="set-num-players-button" class="game-button">Weiter</div>
+            </div>
+            <div id="player-settings-wrapper" class="game-wrapper">
+                <div class="headline">Spielernamen</div>
+                <div id="player-name-input-wrapper">
+                    <!--Hier werden die Inputfelder durch Javascript dynamisch erstellt-->
+                </div>
+                <div id="choose-card-next-btn" class="game-button">Weiter</div>
+            </div>
+            <div id="dealer-settings-wrapper" class="game-wrapper">
+                <div class="headline">Dealer auswählen</div>
+                <div id="dealer-name-wrapper">
+                    <!--Hier werden die verfügbaren Dealer durch Javascript dynamisch erstellt-->
+                </div>
+                <input type="hidden" id="dealer-id" value="0">
+                <div id="start-game-btn" class="game-button">Spiel starten</div>
+
+            </div>
+
+            <div id="game-card-setting-wrapper" class="game-wrapper">
+                <div class="headline">Spiel auswählen</div>
+                <div id="gamecards-wrapper">
+                    <!--Hier werden die Spielkarten durch Javascript dynamisch erstellt-->
+                    <div class="clearfix"></div>
+                </div>
+                <input type="hidden" id="phase-card-id">
+                <div id="dealer-next-btn" class="game-button">Weiter</div>
+            </div>
+            <div id="phase-card-wrapper">
+                <div id="phase-card-hl">Die 10 Phasen</div>
+                <div id="phase-card-wr"><table id="phase-card" cellspacing="0"></table></div>
+                <div id="close-card" class="game-button">Schließen</div>
+            </div>
+            <div id="game-field-wrapper" class="table game-wrapper">
+                <div class="headline">Spielinformationen</div>
+                <table cellspacing="0" align="center" id="player-info-wrapper">
+                    <tr class="table-row">
+                        <td width="40%"><i class="material-icons main-color-light">portrait</i></td>
+                        <td width="20%" class="center-align"><i class="material-icons main-color-light">check</i></td>
+                        <td width="20%" class="center-align"><i class="material-icons main-color-light">gamepad</i></td>
+                        <td width="20%" class="center-align"><i class="material-icons main-color-light">functions</i></td>
+                    </tr>
+                    <!-- Hier werden die Spieler durch Javascript dynamisch erstellt -->
+                </table>
+            </div>
+            <div id="user-rounds-wrapper" class="table game-wrapper">
+                <div id="ur-username" class="headline">Spielername</div>
+                <table cellspacing="0" align="center" id="ur-round-wrapper">
+                    <!-- Hier werden die Spieler durch Javascript dynamisch erstellt (mit remove(.class) wieder entfernen) -->
+                </table>
+                <div id="close-ur-btn" class="game-button">Zurück</div>
+            </div>
+            <div id="finish-form" class="game-wrapper">
+                <div class="headline align-center">Runde abschließen</div>
+                <div>
+                    <table id="finish-input-wrapper"></table>
+                </div>
+                <div id="save-round" class="game-button">Neue Runde</div>
+            </div>
+            <div id="edit-round-wrapper" class="game-wrapper">
+                <div class="headline">Runde bearbeiten</div>
+                <div>
+                    <select id="round-number"></select>
+                </div>
+                <div>
+                    <table id="edit-input-wrapper"></table>
+                </div>
+                <div id="edit-round-btn" class="game-button">Speichern</div>
+            </div>
+        </div>
+    </div>
+    <div id="darkscreen"></div>
+    <div id="window-wrapper">
+        <div id="window-message">Nachricht!</div>
+        <div id="window-buttons">
+            <div class="window-button game-button" id="ok-button">OK</div>
+            <div class="window-button game-button" id="cancel-button">Abbrechen</div>
+            <div class="window-button game-button" id="restart-button">Neues Spiel</div>
+        </div>
+    </div>
+</body>
+</html>
