@@ -454,7 +454,7 @@ $(document).ready(function () {
 
 
 
-
+    //Zeigt die Zusammesfassung aller gespielten Runden eines Spielers an
     function generateUserRounds(user) {
         var rounds = players[user]["rounds"];
         var numRounds = rounds.length;
@@ -546,10 +546,9 @@ $(document).ready(function () {
             $('#game-field-wrapper').hide(500);
             $('#edit-round-wrapper').hide(500);
         }
-
-        //data-checkbox-id=\"" + i +"\"
     });
 
+       //Runden bearbeiten
     $('#edit-last').click(function () {
         console.info("Runde bearbeiten Dialog gestartet");
 
@@ -559,7 +558,7 @@ $(document).ready(function () {
 
         for (i = num_rounds - 1; i >= 0; i--) {
             var rnd_display = i + 1;
-            var rnd = (i == num_rounds - 1) ? "Letzte" : rnd_display + ".";
+            var rnd = (i === num_rounds - 1) ? "Letzte" : rnd_display + ".";
             $('#round-number').append("<option value=\"" + i + "\">" + rnd + " Runde</option>");
         }
 
@@ -577,7 +576,7 @@ $(document).ready(function () {
     });
 
 
-
+    //Erezugt den Runde abschließen oder Runde bearbeiten Dialog (über Parameter gesteuert)
     function create_finish_round_dialog(edit_round = false) {
         num_players = players.length;
         $('#finish-input-wrapper').html("");
@@ -585,18 +584,24 @@ $(document).ready(function () {
 
 
         for (i = 0; i < num_players; i++) {
+
+            var round = -1;
+            var points = "";
+            var phase = "";
+            var input_wrapper = "";
+
             if (edit_round === true) {
-                var round = $('#round-number').val();
-                var points = players[i]["rounds"][round]["points"];
-                var phase = (players[i]["rounds"][round]["completed"] === true) ? "checked=\"checked\"" : "";
-                var input_wrapper = "#edit-input-wrapper";
+                round = $('#round-number').val();
+                points = players[i]["rounds"][round]["points"];
+                phase = (players[i]["rounds"][round]["completed"] === true) ? "checked=\"checked\"" : "";
+                input_wrapper = "#edit-input-wrapper";
 
             }
             else {
-                var round = -1;
-                var points = "";
-                var phase = "";
-                var input_wrapper = "#finish-input-wrapper";
+                round = -1;
+                points = "";
+                phase = "";
+                input_wrapper = "#finish-input-wrapper";
             }
 
             var player_name = players[i]["name"];
@@ -637,7 +642,7 @@ $(document).ready(function () {
 
     }
 
-    //Speichert oder aktualisiert eine abgeschlossene Runde
+    //Speichert eine abgeschlossene Runde (UI)
     $('#save-round').click(function () {
         save_round(-1);
 
@@ -647,7 +652,18 @@ $(document).ready(function () {
         }
 
     });
+    //Aktualisiert eine abgeschlossene Runde (UI)
+    $('#edit-round-btn').click(function () {
+        var round = $('#rnd-nmbr').val();
+        save_round(round);
 
+        if (devMode === false) {
+            $('#edit-round-wrapper').hide(500);
+            $('#game-field-wrapper').show(500);
+        }
+    });
+
+    //Schließt die Userround Übersicht
     $("#close-ur-btn").click(function () {
         if (!devMode) {
             $('#user-rounds-wrapper').hide(500);
@@ -655,24 +671,18 @@ $(document).ready(function () {
         }
     });
 
-    $('#edit-round-btn').click(function () {
-        var round = $('#rnd-nmbr').val();
-        save_round(round);
 
-        if (devMode == false) {
-            $('#edit-round-wrapper').hide(500);
-            $('#game-field-wrapper').show(500);
-        }
-    });
 
     //Speichert eine abgeschlossene Runde und aktualisiert die Daten aller Spieler
     function save_round(round) {
 
+        var rnd_num = 0;
+
         if (round === -1) {
-            var rnd_num = players[0]["rounds"].length;
+            rnd_num = players[0]["rounds"].length;
         }
         else {
-            var rnd_num = round;
+            rnd_num = round;
         }
 
 
@@ -695,7 +705,7 @@ $(document).ready(function () {
                 phase_completed = false;
             }
 
-            if (player_points == "") {
+            if (player_points === "") {
                 player_points = "0";
                 phase_completed = true;
             }
@@ -729,13 +739,13 @@ $(document).ready(function () {
 
 
 
-        update_player_info();
+        updatePlayerInfo();
 
 
     }
 
-    //Berechnet die Punkte und Phasen aller Spieler neu
-    function update_player_info() {
+    //Berechnet die Punkte und Phasen aller Spieler neu und aktualisiert das UI
+    function updatePlayerInfo() {
 
         num_players = players.length;
 
@@ -798,6 +808,7 @@ $(document).ready(function () {
         console.info("-------------------------");
     }
 
+    //Autosave Funktion, damit das Spiel nach dem Beenden der App fortgesetzt werden kann.
     function save() {
 
         if (savegame)
@@ -817,31 +828,39 @@ $(document).ready(function () {
         players[player_id]["phase"] = 1;
     }
 
+    //Überprüft ob auf den LocalStorage des Browsers zugegriffen werden kann.
     function checkLocalStorage() {
         try
         {
             localStorage.setItem('test', 'test');
+            localStorage.getItem('test');
+            localStorage.removeItem('test');
             savegame = true;
             return true;
         }
         catch (e) {
             console.warn("localStorage not available");
-            console.warn("Savegames are not active!");
+            console.warn("savegames are not active");
             savegame = false;
-            showMessage("Warnung!<br><br>Wir haben keinen Zugriff auf deinen internen Speicher.<br><br>Autosave wurde deaktiviert.<br><br>Du kannst das Spiel normal spielen, allerdings ist es NICHT möglich das Spiel zu speichern. <br><br>Wenn du die App beendest, kann das Spiel nicht fortgesetzt werden!");
-
+            showMessage(`
+                Warnung!<br><br>Wir haben keinen Zugriff auf deinen internen Speicher.<br><br>
+                Autosave wurde deaktiviert.<br><br>Du kannst das Spiel normal spielen, allerdings ist es NICHT möglich das Spiel zu speichern.<br><br>
+                Wenn du die App beendest, kann das Spiel nicht fortgesetzt werden!`);
             return false;
         }
     }
 
+    //Überprüft ob ein gespeichertes Spiel vorhanden ist, welches fortgesetzt werden könnte
     function checkSaveGame()
     {
         if (savegame)
         {
-            if (!localStorage.getItem('savegame')) {
+            if (!localStorage.getItem('savegame'))
+            {
                 return false;
             }
-            else {
+            else
+            {
                 return true;
             }
         }
