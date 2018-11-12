@@ -11,18 +11,73 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" type="text/css" href="css/index.css">
+
     <script src="scripts/navigo.min.js" type="text/javascript" charset="UTF-8"></script>
     <script src="scripts/jquery-3.3.1.min.js" type="text/javascript" charset="UTF-8"></script>
     <script src="scripts/jquery-ui-1.12.1.min.js" type="text/javascript" charset="UTF-8"></script>
     <script src="scripts/phase10.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="scripts/script.js" type="text/javascript" charset="UTF-8"></script>
 
     <title>Phase10Note</title>
 </head>
 <body class="noselect">
+    <div id="hamburger-menu-wrapper">
+        <div id="hamburger-menu-content-wrapper">
+            <div style="width:100%; margin:auto; text-align:center; margin-bottom:20px;"><img align="middle" src="gfx/p10-logo-main.png" /></div>
+            <ul id="hm-list">
+                
+                <li class="hm-listitem">
+                    <a href="#" data-navigo>
+                        <div class="hm-listitem-symbol left"><i class="material-icons md24-center">home</i></div>
+                        <div class="hm-listitem-text left">Hauptmenü</div>
+                        <div class="clearfix"></div>
+                    </a>
+                </li>
+                <li class="hm-listitem">
+                    <a href="#gamesettings" data-navigo>
+                        <div class="hm-listitem-symbol left"><i class="material-icons md24-center">web_asset</i></div>
+                        <div class="hm-listitem-text left">Neues Spiel</div>
+                        <div class="clearfix"></div>
+                    </a>
+                </li>
+                <li class="seperator"></li>
+                <li class="hm-listitem">
+                    <div class="hm-listitem-symbol left"><i class="material-icons md24-center">transform</i></div>
+                    <div class="hm-listitem-text left">Phasenkarte ändern</div>
+                    <div class="clearfix"></div>
+                </li>
+                <li class="hm-listitem">
+                    <div class="hm-listitem-symbol left"><i class="material-icons md24-center">perm_identity</i></div>
+                    <div class="hm-listitem-text left">Dealer ändern</div>
+                    <div class="clearfix"></div>
+                </li>
+
+                <li class="seperator"></li>
+                <li class="hm-listitem">
+                    <div class="hm-listitem-symbol left"><i class="material-icons md24-center">info</i></div>
+                    <div class="hm-listitem-text left">About</div>
+                    <div class="clearfix"></div>
+                </li>
+                <li class="hm-listitem">
+                    <div class="hm-listitem-symbol left"><i class="material-icons md24-center">settings</i></div>
+                    <div class="hm-listitem-text left">Einstellungen</div>
+                    <div class="clearfix"></div>
+                </li>
+                <li class="hm-listitem">
+                    <a href="javascript:window.close()">
+                        <div class="hm-listitem-symbol left"><i class="material-icons md24-center">close</i></div>
+                        <div class="hm-listitem-text left">Beenden</div>
+                        <div class="clearfix"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="hamburger-button" class="left"><i class="material-icons md24">menu</i></div>
     <div id="content-wrapper">
         <div id="game-info-wrapper">
             <div id="app-title">
-                <div id="hamburger-button" class="left"><i class="material-icons md24">menu</i></div>
+
                 <div class="left">Phase 10 Notes</div>
                 <div class="clearfix"></div>
             </div>
@@ -38,21 +93,46 @@
         <div id="game-content-wrapper">
             <div id="game-welcome-wrapper" class="game-wrapper">
                 <div id="welcome-card" class="game-wrapper"><img src="gfx/p10-logo.png" /></div>
-                <div id="game-continue-button" class="game-button">Fortsetzen</div>
-                <div id="new-game-button" class="game-button">Neues Spiel</div>
-                <div id="game-options-button" class="game-button">Optionen</div>
+                <div id="game-continue-button" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-text">Fortsetzen</div>
+                        <div class="game-button-icon"><i class="material-icons lh-48"></i></div>
+                    </div>
+                </div>
+                <div id="new-game-button" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-text">Neues Spiel</div>
+                        <div class="game-button-icon"><i class="material-icons lh-48"></i></div>
+                    </div>
+                </div>
+                <div id="game-options-button" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-text">Optionen</div>
+                        <div class="game-button-icon"><i class="material-icons lh-48"></i></div>
+                    </div>
+                </div>
             </div>
             <div id="game-settings-wrapper" class="game-wrapper">
                 <div class="headline">Anzahl der Spieler</div>
-                <div><input id="num-players" type="number" maxlength="3"></div>
-                <div id="set-num-players-button" class="game-button">Weiter</div>
+                <div><input id="num-players" type="number" maxlength="2"></div>
+                <div id="set-num-players-button" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-text">Weiter</div>
+                        <div class="game-button-icon"><i class="material-icons lh-48">exit_to_app</i></div>
+                    </div>
+                </div>
             </div>
             <div id="player-settings-wrapper" class="game-wrapper">
                 <div class="headline">Spielernamen</div>
                 <div id="player-name-input-wrapper">
                     <!--Hier werden die Inputfelder durch Javascript dynamisch erstellt-->
                 </div>
-                <div id="choose-card-next-btn" class="game-button">Weiter</div>
+                <div id="choose-card-next-btn" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-text">Weiter</div>
+                        <div class="game-button-icon"><i class="material-icons lh-48">exit_to_app</i></div>
+                    </div>
+                </div>
             </div>
             <div id="dealer-settings-wrapper" class="game-wrapper">
                 <div class="headline">Dealer auswählen</div>
@@ -60,32 +140,45 @@
                     <!--Hier werden die verfügbaren Dealer durch Javascript dynamisch erstellt-->
                 </div>
                 <input type="hidden" id="dealer-id" value="0">
-                <div id="start-game-btn" class="game-button">Spiel starten</div>
-
+                <div id="start-game-btn" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-icon"><i class="material-icons lh-48">done_all</i></div>
+                        <div class="game-button-text">Spiel starten</div>
+                    </div>
+                </div>
             </div>
-
             <div id="game-card-setting-wrapper" class="game-wrapper">
                 <div class="headline">Spiel auswählen</div>
                 <div id="gamecards-wrapper">
                     <!--Hier werden die Spielkarten durch Javascript dynamisch erstellt-->
                     <div class="clearfix"></div>
                 </div>
-                <input type="hidden" id="phase-card-id">
-                <div id="dealer-next-btn" class="game-button">Weiter</div>
+                <input type="hidden" id="phase-card-id" value="0">
+                <div id="dealer-next-btn" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-text">Weiter</div>
+                        <div class="game-button-icon"><i class="material-icons lh-48">exit_to_app</i></div>
+                    </div>
+                </div>
             </div>
             <div id="phase-card-wrapper">
                 <div id="phase-card-hl">Die 10 Phasen</div>
                 <div id="phase-card-wr"><table id="phase-card" cellspacing="0"></table></div>
-                <div id="close-card" class="game-button">Schließen</div>
+                <div id="close-card" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-icon"><i class="material-icons lh-48"></i></div>
+                        <div class="game-button-text">Schließen</div>
+                    </div>
+                </div>
             </div>
             <div id="game-field-wrapper" class="table game-wrapper">
                 <div class="headline">Spielinformationen</div>
                 <table cellspacing="0" align="center" id="player-info-wrapper">
                     <thead>
                         <tr class="table-row">
-                            <td width="40%"><i class="material-icons main-color-light">portrait</i></td>
-                            <td width="20%" class="center-align"><i class="material-icons main-color-light">check</i></td>
-                            <td width="20%" class="center-align"><i class="material-icons main-color-light">gamepad</i></td>
+                            <td width="40%"><i class="material-icons main-color-light">person</i></td>
+                            <td width="20%" class="center-align"><i class="material-icons main-color-light">done_all</i></td>
+                            <td width="20%" class="center-align"><i class="material-icons main-color-light">cached</i></td>
                             <td width="20%" class="center-align"><i class="material-icons main-color-light">functions</i></td>
                         </tr>
                     </thead>
@@ -99,14 +192,24 @@
                 <table cellspacing="0" align="center" id="ur-round-wrapper">
                     <!-- Hier werden die Spieler durch Javascript dynamisch erstellt (mit remove(.class) wieder entfernen) -->
                 </table>
-                <div id="close-ur-btn" class="game-button">Zurück</div>
+                <div id="close-ur-btn" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-icon"><i class="material-icons lh-48">reply</i></div>
+                        <div class="game-button-text">Zurück</div>
+                    </div>
+                </div>
             </div>
             <div id="finish-form" class="game-wrapper">
                 <div class="headline align-center">Runde abschließen</div>
                 <div>
                     <table id="finish-input-wrapper"></table>
                 </div>
-                <div id="save-round" class="game-button">Neue Runde</div>
+                <div id="save-round" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-icon"><i class="material-icons lh-48">done_all</i></div>
+                        <div class="game-button-text">Neue Runde</div>
+                    </div>
+                </div>
             </div>
             <div id="edit-round-wrapper" class="game-wrapper">
                 <div class="headline">Runde bearbeiten</div>
@@ -116,7 +219,12 @@
                 <div>
                     <table id="edit-input-wrapper"></table>
                 </div>
-                <div id="edit-round-btn" class="game-button">Speichern</div>
+                <div id="edit-round-btn" class="game-button">
+                    <div class="game-button-content-wrapper">
+                        <div class="game-button-icon"><i class="material-icons lh-48">update</i></div>
+                        <div class="game-button-text">Update</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -124,9 +232,24 @@
     <div id="window-wrapper">
         <div id="window-message">Nachricht!</div>
         <div id="window-buttons">
-            <div class="window-button game-button" id="ok-button">OK</div>
-            <div class="window-button game-button" id="cancel-button">Abbrechen</div>
-            <div class="window-button game-button" id="restart-button">Neues Spiel</div>
+            <div class="window-button game-button" id="ok-button">
+                <div class="game-button-content-wrapper">
+                    <div class="game-button-icon"><i class="material-icons lh-48">done_all</i></div>
+                    <div class="game-button-text"></div>
+                </div>
+            </div>
+            <div class="window-button game-button" id="cancel-button">
+                <div class="game-button-content-wrapper">
+                    <div class="game-button-icon"><i class="material-icons lh-48"></i></div>
+                    <div class="game-button-text">Abbrechen</div>
+                </div>
+            </div>
+            <div class="window-button game-button" id="restart-button">
+                <div class="game-button-content-wrapper">
+                    <div class="game-button-icon"><i class="material-icons lh-48"></i></div>
+                    <div class="game-button-text">Neues Spiel</div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

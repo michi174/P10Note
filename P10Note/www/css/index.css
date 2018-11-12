@@ -34,7 +34,7 @@ time, mark, audio, video {
     font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
-    font-size: 24px; /* Preferred icon size */
+    font-size: 28px; /* Preferred icon size */
     line-height: 1;
     text-transform: none;
     letter-spacing: normal;
@@ -55,6 +55,16 @@ time, mark, audio, video {
     font-size: 24px;
 }
 
+.material-icons.md24-center {
+    font-size: 24px;
+    line-height: 48px;
+}
+
+.lh-48{
+    line-height: 48px;
+}
+
+
 .material-icons.accent-color {
     color: var(--accent-color);
 }
@@ -69,10 +79,13 @@ time, mark, audio, video {
 :root {
     --main-color: hsl(213, 31%, 25%);
     --main-color-light: hsl(213, 31%, 55%);
+    --main-color-ultra-light: hsla(213, 31%, 55%, 0.07);
     --accent-color: hsla(345, 100%, 60%, 1);
     --accent-color-light: hsl(345, 100%, 65%);
+    --accent-color-ultra-light: hsla(345, 100%, 65%, 0.2);
     --accent-color-dark: hsl(345, 100%, 55%);
     --text-color: #F4F6F7;
+    --text-color-dark: #444;
 }
 
 body 
@@ -82,6 +95,89 @@ body
     color: #444;
     background-color: #eee;
     font-size:17px;
+}
+
+.checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox label {
+    position: relative;
+    display: inline-block;
+    /*16px width of fake checkbox + 6px distance between fake checkbox and text*/
+    padding-left: 22px;
+}
+
+    .checkbox label::before,
+    .checkbox label::after {
+        position: absolute;
+        content: "";
+        /*Needed for the line-height to take effect*/
+        display: inline-block;
+    }
+
+    /*Outer box of the fake checkbox*/
+    .checkbox label::before {
+        height: 24px;
+        width: 24px;
+        border: 0px solid;
+        border-radius: 5px;
+        left: 0px;
+        background-color: var(--accent-color);
+        top: -18px;
+        transition: background-color ease-out 500ms;
+    }
+
+    /*Checkmark of the fake checkbox*/
+
+
+/*Hide the checkmark by default*/
+.checkbox input[type="checkbox"]:not(:checked) + label::after {
+    content: "";
+    height: 0px;
+    width: 10px;
+    border-left: 3px solid;
+    border-bottom: 3px solid;
+    transform: rotate(-0deg);
+    border-color: white;
+    left: 6px;
+    top: -7px;
+    transition: transform ease-out 100ms;
+}
+
+/*Unhide on the checked state*/
+.checkbox input[type="checkbox"]:checked + label::after {
+    content: "";
+    height: 4px;
+    width: 10px;
+    border-left: 3px solid;
+    border-bottom: 3px solid;
+    transform: rotate(-45deg);
+    border-color: white;
+    left: 6px;
+    top: -10px;
+    transition: transform ease-out 100ms;
+}
+
+    .checkbox input[type="checkbox"]:checked + label::before {
+    background-color: hsl(141, 71%, 48%);
+}
+
+/*Adding focus styles on the outer-box of the fake checkbox*/
+.checkbox input[type="checkbox"]:focus + label::before {
+    outline: rgb(59, 153, 252) auto 1px;
+}
+/***************END**************/
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+input[type='number'] {
+    -moz-appearance: textfield;
 }
 
 select
@@ -100,21 +196,30 @@ td{
     overflow:hidden;
 }
 
-input
-{
-    border: 0;
-    border: 2px solid var(--main-color-light);
-    border-radius:45px;
+input {
+    border: 1px solid var(--main-color-ultra-light);
+    border-radius: 45px;
     outline-width: 0;
-    background-color: hsla(0, 100%, 44%, 0);
+    background-color: var(--main-color-ultra-light);
     font-size: 20px;
-    line-height:45px;
-    text-indent: 15px;
+    line-height: 45px;
+    text-indent: 20px;
+}
+
+input:focus
+{
+    border: 1px solid var(--accent-color);
+}
+
+input[type=number]
+{
+    text-align:center;
+    text-indent: 0;
 }
 
 ::placeholder
 {
-    color:#999;
+    color: #999;
 }
 ::-ms-input-placeholder {
     color: #999;
@@ -143,16 +248,12 @@ img.left, img.right {
     margin: auto;
 }
 
-#hamburger-button
-{
-    margin-right: 20px;
-    line-height: 24px;
-}
+
 
 #app-title
 {
     font-size: 20px;
-    margin: 10px 0 40px 10px;
+    margin: 10px 0 40px 36px;
     font-weight: bold;
     letter-spacing: 0;
 }
@@ -181,8 +282,8 @@ img.left, img.right {
 }
 
 .ur-tr-header {
-    line-height: 48px;
-    font-size: 20px;
+    line-height: 28px;
+    font-size: 18px;
     margin-right:20px;
 }
 
@@ -619,11 +720,12 @@ tr.dealer-highlight td:last-child {
 
 .headline
 {
-    color: var(--main-color-light);
+    color: var(--accent-color);
     font-weight: bolder;
     margin: 20px 0 20px 0;
     letter-spacing: 1px;
     font-size: 20px;
+    text-align: center;
 }
 
 
@@ -638,7 +740,6 @@ tr.dealer-highlight td:last-child {
 }
 .game-button {
     width: 50%;
-    line-height: 45px;
     background-color: var(--accent-color);
     text-align: center;
     border-radius: 45px;
@@ -649,6 +750,17 @@ tr.dealer-highlight td:last-child {
     margin-top: 20px;
     margin-bottom: 20px;
     cursor: pointer;
+    transition: background-color ease-in 200ms;
+}
+.game-button-content-wrapper{
+    margin: auto;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+}
+.game-button-text
+{
+    line-height:48px;
 }
 
 .game-button:hover {
@@ -693,9 +805,9 @@ tr.dealer-highlight td:last-child {
 
 .table-row {
     display: table-row;
-    line-height: 60px;
     border: 1px solid;
     text-indent: 10px;
+    height: 60px;
 }
 .game-header
 {
@@ -705,7 +817,7 @@ tr.dealer-highlight td:last-child {
 }
 
 .gameinfo-button {
-    width: 64px;
+    width: 60px;
     line-height: 48px;
     background-color: var(--accent-color);
     text-align: center;
@@ -716,6 +828,7 @@ tr.dealer-highlight td:last-child {
 .gameinfo-button:hover
 {
     background-color: var(--accent-color-light);
+    cursor:pointer;
     /*border: 1px solid #7197AC;*/
 
 }
@@ -723,4 +836,96 @@ tr.dealer-highlight td:last-child {
 {
     background-color: var(--accent-color-dark);
     /*border: 1px solid #7197AC;*/
+}
+#hamburger-menu-wrapper {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    background-color: var(--main-color);
+    z-index: 5000;
+    min-width: 304px;
+    width: 20%;
+    display: none;
+    overflow: hidden;
+    opacity:0.95;
+    color:#fff;
+}
+
+#hamburger-menu-content-wrapper {
+    margin-top: 44px;
+    font-size: 20px;
+    overflow: hidden;
+}
+
+#hamburger-menu-wrapper li {
+    list-style-type: none;
+    line-height: 48px;
+    line-break: loose;
+    
+    transition: background-color 100ms linear;
+}
+
+#hamburger-menu-wrapper li.seperator:hover {
+    background-color: none !important;
+}
+#hamburger-menu-wrapper li:hover, #hamburger-menu-wrapper li:active {
+    background-color: var(--accent-color);
+    color: white !important;
+}
+
+
+
+
+
+#hamburger-button {
+    position: fixed;
+    top: 15px;
+    left: 8px;
+    margin-right: 20px;
+    line-height: 24px;
+    color: #fff;
+    z-index: 6000;
+}
+
+.hm-listitem-symbol {
+    color: var(--accent-color-light);
+    margin: 0 7px 0 10px;
+}
+
+.hm-listitem-text {
+    font-size: 16px;
+}
+
+.hm-listitem {
+    margin: 0 4px 0 4px;
+}
+
+.hm-listitem a{
+    color: white;
+    text-decoration:none;
+}
+
+.seperator {
+    border-bottom: 1px solid var(--main-color-light);
+    line-height:1px;
+    margin:10px 8px 10px 8px;
+}
+.clickable-text
+{
+    line-height:36px;
+    width:36px;
+    display:inline-block;
+    text-align: center;
+    text-indent:0px;
+    border:1px solid var(--main-color-ultra-light);
+    background-color: var(--main-color-ultra-light);
+    border-radius:5px;
+    cursor:pointer;
+}
+.scaleX{
+    transform: scaleX(-1);
+}
+
+.scaleY{
+    transform: scaleY(-1);
 }
