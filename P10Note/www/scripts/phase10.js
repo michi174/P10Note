@@ -20,7 +20,10 @@ $(document).ready(function () {
 
     function initGame()
     {
-        generatePhaseCards();
+        if (phases.length < 1) {
+            generatePhaseCards();
+        }
+
         savegame = checkLocalStorage();
         hasSavegame = checkSaveGame();
         
@@ -57,10 +60,6 @@ $(document).ready(function () {
 
     }).resolve();
 
-    /*router.notFound(function () {
-        console.log("Routed from notFound to Homepage");
-        router.navigate('');
-    });*/
 
     if (devMode === true) {
         $('#game-settings-wrapper').show(500);
@@ -364,6 +363,7 @@ $(document).ready(function () {
 
     //Todo: Outsource it to a fking JSON!!!
     function generatePhaseCards() {
+
         phases[0] = new Array();
         phases[0]["name"] = "Classic";
         phases[0]["phase"] = new Array();
@@ -489,6 +489,7 @@ $(document).ready(function () {
     function createPhaseCard(cardId, phaseId = -1) {
         if (phases.length > 0)
         {
+            $('#phase-card-hl').html("Die " + phases[cardId]['phase'].length + " Phasen");
             num_phases = phases[cardId]["phase"].length;
 
             $('#phase-card').html("");
