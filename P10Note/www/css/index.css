@@ -82,7 +82,7 @@ time, mark, audio, video {
     --main-color-ultra-light: hsla(213, 31%, 55%, 0.07);
     --accent-color: hsla(345, 100%, 60%, 1);
     --accent-color-light: hsl(345, 100%, 65%);
-    --accent-color-ultra-light: hsla(345, 100%, 65%, 0.2);
+    --accent-color-ultra-light: hsla(345, 100%, 65%, 0.6);
     --accent-color-dark: hsl(345, 100%, 55%);
     --text-color: #F4F6F7;
     --text-color-dark: #444;
@@ -307,12 +307,12 @@ tr.ur-removeable-round td {
     width: 100%;
     height: 135px;
     padding: 5px 0 20px 5px;
-    background-color: var(--main-color);
+    background: linear-gradient(45deg, rgba(44,62,84,1) 0%, rgba(79,58,131,1) 90%, rgba(117,54,182,1) 100%);
     color: #FFF;
     position: fixed;
     top: 0;
     left: 0;
-    box-shadow: 1px 0 10px 1px #999;
+    box-shadow: 0px 5px 5px 0 #999;
     z-index: 1000;
 }
 
@@ -598,17 +598,23 @@ tr.ur-removeable-round td {
     color: #fff !important;
 }
 
-.phase-card-choose:active, .dealer-choose:active {
-    border: 1px solid var(--accent-color);
-    background-color: var(--accent-color-dark);
-    color: #fff !important;
-}
+    .phase-card-choose:hover .show-card
+    {
+        color: #fff !important;
+    }
 
-.phase-selected
+    .phase-card-choose:active, .dealer-choose:active {
+        border: 1px solid var(--accent-color);
+        background-color: var(--accent-color-dark);
+        color: #fff !important;
+    }
+
+.phase-selected, .phase-selected .show-card
 {
     border-color:var(--accent-color-dark) !important;
     background-color: var(--accent-color);
-    color: #FFF;
+    color: #FFF !important;
+    border-left-color: #fff !important;
 
 }
 
@@ -740,47 +746,56 @@ tr.dealer-highlight td:last-child {
 }
 .game-button {
     width: 50%;
+    max-width: 250px;
     background-color: var(--accent-color);
+    background-image: linear-gradient(45deg, rgba(255,51,102,1) 0%, rgba(255,75,79,1) 75%, rgba(255,104,51,1) 100%);
+    background-size: 100% auto;
     text-align: center;
     border-radius: 45px;
-    border: 1px solid var(--accent-color-dark);
-    box-shadow: 0 0 10px 1px hsla(0, 0%, 0%, 0.3);
+    /*border: 1px solid var(--accent-color-dark);*/
+    box-shadow: 0 2px 3px 1px var(--accent-color-ultra-light);
     color: #FFF;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
     cursor: pointer;
-    transition: background-color ease-in 200ms;
-}
-.game-button-content-wrapper{
-    margin: auto;
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-}
-.game-button-text
-{
-    line-height:48px;
+    transition: 0.2s;
 }
 
-.game-button:hover {
-    background-color: var(--accent-color-light);
-}
+
+
+    .game-button:hover {
+        box-shadow: 0 4px 5px 2px var(--accent-color-ultra-light);
+        background-size: 200% auto;
+        background-position: right center;
+    }
+
 
 .game-button:active {
     background-color: var(--accent-color-dark);
 }
 
-.game-wrapper
-{
+.game-button-content-wrapper {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.game-button-text {
+    line-height: 48px;
+}
+
+.game-wrapper {
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f1f1f1;
-    width:97%;
+    width: 97%;
     margin: auto;
     margin-top: 20px;
     text-indent: 10px !important;
     min-height: 60px;
+    box-shadow: #ccc 0 5px 10px -3px;
 }
 
 .left
@@ -823,15 +838,16 @@ tr.dealer-highlight td:last-child {
     text-align: center;
     margin-right: 10px;
     border-radius: 10px;
+    background-image: linear-gradient(45deg, rgba(255,51,102,1) 0%, rgba(255,75,79,1) 75%, rgba(255,104,51,1) 100%);
+    box-shadow: var(--accent-color-ultra-light) 0 0px 2px 1px;
     /*border: 1px solid var(--accent-color-dark);*/
 }
-.gameinfo-button:hover
-{
-    background-color: var(--accent-color-light);
-    cursor:pointer;
-    /*border: 1px solid #7197AC;*/
-
-}
+    .gameinfo-button:hover {
+        background-color: var(--accent-color-light);
+        cursor: pointer;
+        box-shadow: var(--accent-color-ultra-light) 0 0px 10px 1px;
+        /*border: 1px solid #7197AC;*/
+    }
 .gameinfo-button:active
 {
     background-color: var(--accent-color-dark);
@@ -842,6 +858,7 @@ tr.dealer-highlight td:last-child {
     bottom: 0;
     position: absolute;
     background-color: var(--main-color);
+    background: linear-gradient(45deg, rgba(44,62,84,1) 0%, rgba(79,58,131,1) 90%, rgba(117,54,182,1) 100%);
     z-index: 5000;
     min-width: 304px;
     width: 20%;
@@ -861,8 +878,7 @@ tr.dealer-highlight td:last-child {
     list-style-type: none;
     line-height: 48px;
     line-break: loose;
-    
-    transition: background-color 100ms linear;
+    transition: all 100ms linear;
 }
 
 #hamburger-menu-wrapper li.seperator:hover {
@@ -871,6 +887,10 @@ tr.dealer-highlight td:last-child {
 #hamburger-menu-wrapper li:hover, #hamburger-menu-wrapper li:active {
     background-color: var(--accent-color);
     color: white !important;
+}
+
+#hamburger-menu-wrapper li:hover .hm-listitem-symbol {
+    color: #fff !important;
 }
 
 
@@ -887,9 +907,10 @@ tr.dealer-highlight td:last-child {
     z-index: 6000;
 }
 
+
 .hm-listitem-symbol {
     color: var(--accent-color-light);
-    margin: 0 7px 0 10px;
+    margin: 0 20px 0 10px;
 }
 
 .hm-listitem-text {
